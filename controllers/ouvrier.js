@@ -215,7 +215,7 @@ const getouvrierById = async (req, res, next) => {
   res.json({ ouvrier: existingUser });
 };
 
-exports.signup = signup;
+exports.signup = signup;  
 exports.login = login;
 exports.getouvrier = getouvrier;
 exports.updateouvrier = updateouvrier;
