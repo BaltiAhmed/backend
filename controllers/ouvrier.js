@@ -24,7 +24,7 @@ const signup = async (req, res, next) => {
     return next(new httpError("invalid input passed ", 422));
   }
 
-  const { name, email, tel, adresse } = req.body;
+  const { name, email, tel, adresse,dep } = req.body;
   const password = generator.generate({
     length: 10,
     uppercase: false,
@@ -49,7 +49,9 @@ const signup = async (req, res, next) => {
     password,
     tel,
     adresse,
+    dep,
     commande: [],
+    pointage: []
   });
 
   try {

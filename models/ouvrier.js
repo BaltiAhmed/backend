@@ -8,6 +8,7 @@ const ouvrierSchema = new schema({
     password:{type:String,required:true,minlenght:8},
     tel:{type:String,required:true},
     adresse:{type:String,required:true},
+    dep:{type:String,required:true},
     commande:[{type:mongoose.Types.ObjectId,required:true,ref:'commande'}],
     pointage:[{type:mongoose.Types.ObjectId,required:true,ref:'pointage'}]
 
