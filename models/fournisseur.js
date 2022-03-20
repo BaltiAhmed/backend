@@ -4,6 +4,7 @@ const schema = mongoose.Schema;
 
 const fournisseurSchema = new schema({
     name:{type:String,required:true},
+    cin:{type:String,required:true,unique:true},
     email:{type:String,required:true,unique:true},
     tel:{type:String,required:true},
     adresse:{type:String,required:true}

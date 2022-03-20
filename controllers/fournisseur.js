@@ -12,7 +12,7 @@ const signup = async (req, res, next) => {
     return next(new httpError("invalid input passed ", 422));
   }
 
-  const { name, email, tel, adresse } = req.body;
+  const { cin,name, email, tel, adresse } = req.body;
   let existinguser;
   try {
     existinguser = await fournisseur.findOne({ email: email });
@@ -21,13 +21,22 @@ const signup = async (req, res, next) => {
     return next(error);
   }
 
-  if (existinguser) {
+  let existinguserCin;
+  try {
+    existinguserCin = await fournisseur.findOne({ cin: cin });
+  } catch (err) {
+    const error = new httpError("problems!!!", 500);
+    return next(error);
+  }
+
+  if (existinguser || existinguserCin) {
     const error = new httpError("fournisseur exist", 422);
     return next(error);
   }
 
   const createduser = new fournisseur({
     name,
+    cin,
     email,
     tel,
     adresse,
@@ -90,7 +99,7 @@ const updatefournisseur = async (req, res, next) => {
     return next(new httpError("invalid input passed ", 422));
   }
 
-  const { name, email, tel, adresse } = req.body;
+  const { cin,name, email, tel, adresse } = req.body;
   const UserId = req.params.id;
   let existingUser;
   try {
@@ -100,6 +109,7 @@ const updatefournisseur = async (req, res, next) => {
     return next(error);
   }
 
+  existingUser.cin = cin;
   existingUser.name = name;
   existingUser.email = email;
   existingUser.tel = tel;

@@ -5,7 +5,8 @@ const { validationResult } = require("express-validator");
 const jwt = require("jsonwebtoken");
 
 const commande = require("../models/commande");
-const ouvrier = require('../models/ouvrier')
+const ouvrier = require('../models/ouvrier');
+const produit = require("../models/produit");
 
 const ajoutcommande = async (req, res, next) => {
   const error = validationResult(req);
@@ -35,8 +36,20 @@ const ajoutcommande = async (req, res, next) => {
     finished:false
   });
 
+  let existingProduit
+
+  try {
+    existingProduit = await produit.findById(idProduit);
+  } catch {
+    const error = new httpError("problem", 500);
+    return next(error);
+  }
+
+  existingProduit.quantite = existingProduit.quantite - 1
+
   try {
     await createduser.save();
+    await existingProduit.save();
     await existingOuvrier.commande.push(createduser)
     await existingOuvrier.save()
   } catch (err) {

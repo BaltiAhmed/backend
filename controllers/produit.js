@@ -12,6 +12,7 @@ const ajoutProduit = async (req, res, next) => {
   }
 
   const {
+    ref,
     name,
     categorie,
     poidsNet,
@@ -30,7 +31,16 @@ const ajoutProduit = async (req, res, next) => {
     return next(error);
   }
 
+  let existingProduit;
+  try {
+    existingProduit = await produit.findOne({ ref: ref });
+  } catch (err) {
+    const error = new httpError("problems!!!", 500);
+    return next(error);
+  }
+
   const createdProduit = new produit({
+    ref,
     name,
     categorie,
     poidsNet,
@@ -39,10 +49,9 @@ const ajoutProduit = async (req, res, next) => {
     founisseur,
   });
 
+
   try {
-    await createdProduit.save();
-    existingmagasinier.produits.push(createdProduit);
-    await existingmagasinier.save();
+    createdProduit.save();
   } catch (err) {
     const error = new httpError("failed signup", 500);
     return next(error);
@@ -69,7 +78,7 @@ const updateproduit = async (req, res, next) => {
     return next(new httpError("invalid input passed ", 422));
   }
 
-  const { name, categorie, poidsNet, dateFb, quantite, founisseur } = req.body;
+  const { ref, name, categorie, poidsNet, dateFb, quantite, founisseur } = req.body;
   const userId = req.params.id;
   let existingUser;
   try {
@@ -79,6 +88,7 @@ const updateproduit = async (req, res, next) => {
     return next(error);
   }
 
+  existingUser.ref = ref;
   existingUser.name = name;
   existingUser.categorie = categorie;
   existingUser.poidsNet = poidsNet;

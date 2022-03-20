@@ -24,7 +24,7 @@ const signup = async (req, res, next) => {
     return next(new httpError("invalid input passed ", 422));
   }
 
-  const { name, email, tel, adresse } = req.body;
+  const { cin,name, email, tel, adresse } = req.body;
   const password = generator.generate({
     length: 10,
     uppercase: false,
@@ -37,13 +37,22 @@ const signup = async (req, res, next) => {
     return next(error);
   }
 
-  if (existinguser) {
+  let existinguserCin;
+  try {
+    existinguserCin = await magasinier.findOne({ cin: cin });
+  } catch (err) {
+    const error = new httpError("problems!!!", 500);
+    return next(error);
+  }
+
+  if (existinguser || existinguserCin) {
     const error = new httpError("user exist", 422);
     return next(error);
   }
 
   const createduser = new magasinier({
     name,
+    cin,
     email,
     password,
     tel,
@@ -139,7 +148,7 @@ const updatemagasinier = async (req, res, next) => {
     return next(new httpError("invalid input passed ", 422));
   }
 
-  const { name, email, tel, adresse } = req.body;
+  const { cin,name, email, tel, adresse } = req.body;
   const password = generator.generate({
     length: 10,
     uppercase: false,
@@ -153,6 +162,7 @@ const updatemagasinier = async (req, res, next) => {
     return next(error);
   }
 
+  existingUser.cin = cin;
   existingUser.name = name;
   existingUser.email = email;
   existingUser.password = password;

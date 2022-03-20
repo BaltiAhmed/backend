@@ -13,6 +13,7 @@ const ajoutProduit = async (req, res, next) => {
   }
 
   const {
+    ref,
     name,
     categorie,
     poidsNet,
@@ -28,6 +29,14 @@ const ajoutProduit = async (req, res, next) => {
     existingCommandeExterne = await commandeExterne.findById(commandeExterneId);
   } catch {
     const error = new httpError("problem", 500);
+    return next(error);
+  }
+
+  let existingProduit;
+  try {
+    existingProduit = await produitExterne.findOne({ ref: ref });
+  } catch (err) {
+    const error = new httpError("problems!!!", 500);
     return next(error);
   }
 

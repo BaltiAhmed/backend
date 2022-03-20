@@ -4,6 +4,7 @@ const schema = mongoose.Schema;
 
 const magasinierSchema = new schema({
     name:{type:String,required:true},
+    cin:{type:String,required:true,unique:true},
     email:{type:String,required:true,unique:true},
     password:{type:String,required:true,minlenght:8},
     tel:{type:String,required:true},
