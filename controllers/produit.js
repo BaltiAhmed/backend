@@ -22,6 +22,17 @@ const ajoutProduit = async (req, res, next) => {
     idMagasinier,
   } = req.body;
 
+  console.log(
+    ref,
+    name,
+    categorie,
+    poidsNet,
+    dateFb,
+    quantite,
+    founisseur,
+    idMagasinier
+  );
+
   let existingmagasinier;
 
   try {
@@ -48,7 +59,6 @@ const ajoutProduit = async (req, res, next) => {
     quantite,
     founisseur,
   });
-
 
   try {
     createdProduit.save();
@@ -78,7 +88,8 @@ const updateproduit = async (req, res, next) => {
     return next(new httpError("invalid input passed ", 422));
   }
 
-  const { ref, name, categorie, poidsNet, dateFb, quantite, founisseur } = req.body;
+  const { ref, name, categorie, poidsNet, dateFb, quantite, founisseur } =
+    req.body;
   const userId = req.params.id;
   let existingUser;
   try {
