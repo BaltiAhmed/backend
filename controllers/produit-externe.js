@@ -73,7 +73,7 @@ const getProduitByFactureId = async (req, res, next) => {
     return next(error);
   }
 
-  if (!existingProduit || existingProduit.produits.length === 0) {
+  if (!existingProduit || existingProduit.produits.length == 0) {
     return next(new httpError("could not find parents for this id.", 404));
   }
 
